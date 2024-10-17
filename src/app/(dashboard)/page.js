@@ -1,6 +1,5 @@
 import Card from "@/components/Card";
 import { getItems } from "@/lib/db";
-import Image from "next/image";
 
 export default async function Home() {
 

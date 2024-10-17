@@ -3,6 +3,7 @@ import mongoose, { model } from "mongoose";
 import { User, Product, Order, Session, adapter } from "@/models/models";
 import { cookies } from "next/headers";
 import { hashPassword } from "./hash";
+import { nanoid } from "nanoid";
 
 
 mongoose.connect("mongodb+srv://admin:admin@cluster0.iuj4u.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
@@ -50,11 +51,18 @@ export async function getUserByEmail(email) {
 
 export async function getUserById(id) {
     try {
-        const user = await User.findById(id).populate('orders');
+        const user = await User.findById(id).populate({
+            path: 'orders',
+            populate: {
+                path: 'items.productId',
+                model: 'Product'
+            }
+        });
         return {
             id: user._id,
             username: user.username,
-            email: user.email
+            email: user.email,
+            orders: user.orders
         };
     }
     catch (e) {
@@ -87,6 +95,7 @@ export async function newOrder(userId, items) {
         // Create the order
         const newOrder = new Order({
             userId: userId,
+            orderId: nanoid(10),
             items: items.map((item) => ({
                 productId: item._id,  // Reference to the product's ID
                 count: item.count     // Quantity of the product

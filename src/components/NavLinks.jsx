@@ -11,12 +11,22 @@ import { cartStore } from '@/zustand/store';
 const NavLinks = ({ setOpenCart }) => {
     const user = userStore((state) => state.user);
     const cart = cartStore((state) => state.cart);
+    console.log(user);
     return (
         <div className='flex items-center gap-4 text-lg text-gray-600 font-poppins'>
+
+
+            {
+                user &&
+                <span className='hover:text-[#0A5237] hover:underline'>
+                    {user.username}
+                </span>
+            }
 
             <Link href='/orders' className='hover:text-[#0A5237] hover:underline'>
                 Orders
             </Link>
+
 
 
             {

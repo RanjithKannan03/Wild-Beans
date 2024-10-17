@@ -13,6 +13,7 @@ const User = mongoose.models.User ?? mongoose.model('User', userSchema);
 
 const orderSchema = new mongoose.Schema({
     userId: { type: Schema.Types.ObjectId, ref: 'User' },
+    orderId: String,
     items: [
         {
             productId: { type: Schema.Types.ObjectId, ref: 'Product' }, // Reference to Product
